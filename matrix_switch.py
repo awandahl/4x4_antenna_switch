@@ -64,3 +64,43 @@ def init_relays():
 
 
 init_relays()
+
+DEAD_TIME_SEC = 0.05  # 50 ms dead time
+
+
+def set_radio_antenna(radio, antenna):
+    """
+    Set 'radio' (1..4) to 'antenna' (1..4) or None to disconnect.
+    Enforces one antenna per radio and one radio per antenna.
+    """
+
+    if radio not in RADIOS:
+        raise ValueError("Invalid radio")
+    if antenna is not None and antenna not in ANTENNAS:
+        raise ValueError("Invalid antenna")
+
+    # 1) Turn off any relay currently used by this radio
+    old_ant = current_assignment[radio]
+    if old_ant is not None:
+        old_relay = PAIR_TO_RELAY[(radio, old_ant)]
+        relay_off(old_relay)
+        current_assignment[radio] = None
+
+    # 2) Ensure no other radio is using this antenna (if requested)
+    if antenna is not None:
+        for r, a in current_assignment.items():
+            if r != radio and a == antenna:
+                # Disconnect that other radio first
+                off_relay = PAIR_TO_RELAY[(r, a)]
+                relay_off(off_relay)
+                current_assignment[r] = None
+
+    # 3) Dead time (break-before-make)
+    time.sleep(DEAD_TIME_SEC)
+
+    # 4) Turn on new relay, if any
+    if antenna is not None:
+        relay = PAIR_TO_RELAY[(radio, antenna)]
+        relay_on(relay)
+        current_assignment[radio] = antenna
+
