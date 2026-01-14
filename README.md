@@ -96,4 +96,62 @@ NC terminals: leave open or tie to ground/dummy load according to how much extra
 
 ![a30123495324702ed8b21357d4811e0c](https://github.com/user-attachments/assets/17dc8cb5-628d-4a65-a22f-1f29e19680fd)
 
+Design is around a **single source of truth** (the BBB) with explicit ownership and priority, so “antenna battles” are handled by rules, not by race conditions.
 
+## Core web UI model
+
+BBB maintain a state like:
+
+```json
+{
+  "radios": {
+    "1": {"name": "Atlas 215X", "antenna": 2, "owner": "SM0XYZ"},
+    "2": {"name": "K2",        "antenna": null, "owner": null},
+    "3": {"name": "uBITX",     "antenna": 4, "owner": "SM0ABC"},
+    "4": {"name": "Spare",     "antenna": null, "owner": null}
+  },
+  "antennas": {
+    "1": {"name": "80/40 dipole", "in_use_by": null},
+    "2": {"name": "20 m vertical","in_use_by": 1},
+    "3": {"name": "15 m Yagi",    "in_use_by": null},
+    "4": {"name": "RX loop",      "in_use_by": 3}
+  }
+}
+```
+
+The web page shows this as a 4×4 matrix:
+
+- Rows: radios (with name, owner, TX/busy indicator).
+- Columns: antennas (name, band, “in use by …”).
+- Cells: button or indicator for “radio X → antenna Y”.
+
+Clicking a cell sends `POST /set` with the user identity (or station label). The backend decides whether to grant or deny.
+
+## Dealing with “battle of antennas”
+
+Pick one of these policies and encode it in the backend:
+
+1. **First‑come, first‑served (simple):**
+    - If an antenna is free → grant.
+    - If in use and that radio is not TX → deny with message “Antenna in use by Rk/OpName; please coordinate.”
+2. **Priority per radio or operator:**
+    - Assign each radio or operator a numeric priority.
+    - When someone requests an antenna that is in use by *lower* priority, backend can:
+        - Either deny with “occupied by higher priority” or
+        - Force a pre‑emption with a short countdown (“Op A will be disconnected from A2 in 10 s”).
+3. **Reservation / lock:**
+    - Add a “lock” flag per antenna or radio: when locked, only the owning operator or the console admin can change assignments.
+    - UI shows a lock icon; other operators see the button disabled or get a clear “locked” message.
+
+In all cases, the **logic layer** is the same relay control you already have; the difference is what the HTTP handler allows.
+
+## Web interface details
+
+- Front‑end: a single HTML page (Bootstrap table) that:
+    - Polls `/status` every few seconds (or uses WebSockets) to update the matrix.
+    - Sends `POST /set` for clicks, including: `radio`, `antenna`, `operator_id`.
+- Back‑end (Flask):
+    - Extends `set_radio_antenna()` with checks: is antenna free? does priority allow pre‑emption? is this radio locked?
+    - On state change: updates `current_assignment` *and* an in‑memory/object store with owner and timestamps.
+
+If you tell how you plan to identify operators (simple shared password per operator vs no auth vs full login), a concrete `/set` API shape and HTML stub for the matrix UI can be sketched next, including where to show “antenna in use by …” and “locked” indicators.
