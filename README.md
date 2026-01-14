@@ -91,3 +91,6 @@ NC terminals: leave open or tie to ground/dummy load according to how much extra
 - Keep coax pigtails as short and direct as possible; bond shields to the box.
 - Bring the BBB in via a shielded cable or mount it inside and bring Ethernet/USB out with appropriate feedthroughs.
 - Tie BBB ground to the RF box ground at one solid point.
+  
+<img width="513" height="385" alt="bbb_headers" src="https://github.com/user-attachments/assets/ae9b7e7e-b9a2-46fe-99ce-f40bbfd5d12c" />
+
