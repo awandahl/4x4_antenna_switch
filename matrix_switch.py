@@ -1,5 +1,7 @@
 # file: matrix_switch.py
 
+# Relay mapping and GPIO setup
+
 import time
 from flask import Flask, request, jsonify
 import Adafruit_BBIO.GPIO as GPIO
@@ -65,6 +67,8 @@ def init_relays():
 
 init_relays()
 
+# Core switching logic (break‑before‑make)
+
 DEAD_TIME_SEC = 0.05  # 50 ms dead time
 
 
@@ -104,3 +108,38 @@ def set_radio_antenna(radio, antenna):
         relay_on(relay)
         current_assignment[radio] = antenna
 
+# Simple HTTP API
+
+@app.route("/set")
+def api_set():
+    """
+    Example calls:
+      /set?radio=1&antenna=2   -> R1 -> A2
+      /set?radio=3&antenna=0   -> R3 disconnected
+    """
+    try:
+        r = int(request.args.get("radio", "0"))
+        a_raw = request.args.get("antenna", None)
+        if a_raw is None:
+            return jsonify({"error": "antenna parameter missing"}), 400
+
+        a = int(a_raw)
+        if a == 0:
+            antenna = None
+        else:
+            antenna = a
+
+        set_radio_antenna(r, antenna)
+        return jsonify({"status": "ok", "radio": r, "antenna": antenna})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route("/status")
+def api_status():
+    return jsonify(current_assignment)
+
+
+if __name__ == "__main__":
+    # For debugging; in production you would run behind systemd / gunicorn / nginx, etc.
+    app.run(host="0.0.0.0", port=8080)
