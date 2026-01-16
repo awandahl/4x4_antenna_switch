@@ -1,3 +1,8 @@
+4x4   
+EC-24-B8-9D-81-D7   
+192.168.0.210   
+
+
 # 4x4_antenna_switch
 
 BeagleBone Black P8/P9 pins → 16 relay inputs, plus power and grounds. This assumes a 5 V relay board with opto/transistor inputs that are active‑HIGH.
