@@ -1,76 +1,37 @@
-4x4   
-EC-24-B8-9D-81-D7   
-192.168.0.210   
-
 
 # 4x4_antenna_switch
 
-BeagleBone Black P8/P9 pins → 16 relay inputs, plus power and grounds. This assumes a 5 V relay board with opto/transistor inputs that are active‑HIGH.
+Mapping that includes both **GPIO numbers and the physical header pins** on the standard Wemos/AZ‑Delivery Lolin32.[^1][^2]
 
-## 1. Power and common connections
+## Lolin32 → 16‑relay board wiring
 
-- Relay board VCC (logic side): **5 V** from your 5 V supply.
-- Relay board GND: to **BeagleBone Black GND** (e.g. P9_1 and/or P9_2).
-- If relay board has a separate JD‑VCC (coil power), feed that also with 5 V and keep its GND common with BBB.
-
-Do **not** power the relay coils from the BBB’s 5 V pin; use an external 5 V supply sized for all 16 relays on, then tie grounds together.
-
-## 2. BeagleBone → relay input mapping
-
-Use only GPIO‑safe pins (no HDMI/eMMC conflicts) and keep them in order so cabling is simple. One possible mapping:
+Use any free header pins that expose the listed GPIOs; the “Pin\#” column is the silkscreen/header position on the Lolin32 board.
 
 
-| Relay | Relay IN pin | BBB header pin | BBB signal name |
-| :-- | :-- | :-- | :-- |
-| 1 | IN1 | P8_7 | GPIO66 |
-| 2 | IN2 | P8_8 | GPIO67 |
-| 3 | IN3 | P8_9 | GPIO69 |
-| 4 | IN4 | P8_10 | GPIO68 |
-| 5 | IN5 | P8_11 | GPIO45 |
-| 6 | IN6 | P8_12 | GPIO44 |
-| 7 | IN7 | P8_14 | GPIO26 |
-| 8 | IN8 | P8_15 | GPIO47 |
-| 9 | IN9 | P8_16 | GPIO46 |
-| 10 | IN10 | P8_17 | GPIO27 |
-| 11 | IN11 | P8_18 | GPIO65 |
-| 12 | IN12 | P8_26 | GPIO61 |
-| 13 | IN13 | P9_12 | GPIO60 |
-| 14 | IN14 | P9_15 | GPIO48 |
-| 15 | IN15 | P9_23 | GPIO49 |
-| 16 | IN16 | P9_41 | GPIO20 |
+| Relay IN | ESP32 GPIO | Lolin32 header pin label / position |
+| :-- | :-- | :-- |
+| IN1 | GPIO4 | Pin labeled **4** (left side, near top) [^1] |
+| IN2 | GPIO5 | Pin labeled **5** |
+| IN3 | GPIO12 | Pin labeled **12** |
+| IN4 | GPIO13 | Pin labeled **13** |
+| IN5 | GPIO14 | Pin labeled **14** |
+| IN6 | GPIO16 | Pin labeled **16** |
+| IN7 | GPIO17 | Pin labeled **17** |
+| IN8 | GPIO18 | Pin labeled **18** |
+| IN9 | GPIO19 | Pin labeled **19** |
+| IN10 | GPIO21 | Pin labeled **21** |
+| IN11 | GPIO22 | Pin labeled **22** |
+| IN12 | GPIO23 | Pin labeled **23** |
+| IN13 | GPIO25 | Pin labeled **25** |
+| IN14 | GPIO26 | Pin labeled **26** |
+| IN15 | GPIO27 | Pin labeled **27** |
+| IN16 | GPIO32 | Pin labeled **32** (top/right side) |
 
-Notes:
+Common connections:
 
-- All listed pins are standard GPIOs on P8/P9 and are safe to use for output when configured correctly in the device tree.
-- Run a 16‑way ribbon (or two 8‑way) from these BBB pins to the relay board’s IN1–IN16.
-- Double‑check the particular relay board’s pinout: some are active‑LOW (IN pulled low turns relay ON). If so, you will invert logic in software, but wiring stays the same.
+- Any Lolin32 **GND** pin → relay board **GND**.
+- Your internal **5 V** injection (from buck or relay‑board converter) goes to the Lolin32 5 V rail point you choose to solder to, not a header pin.[^2][^3]
 
-
-## 3. RF side wiring (radios/antennas → relay contacts)
-
-Same logical scheme as before, now tied to relay numbers above:
-
-- Radios: R1, R2, R3, R4.
-- Antennas: A1, A2, A3, A4.
-
-**Relay assignment:**
-
-- R1–A1 → relay 1 (IN1 / P8_7)
-- R1–A2 → relay 2 (IN2 / P8_8)
-- R1–A3 → relay 3 (IN3 / P8_9)
-- R1–A4 → relay 4 (IN4 / P8_10)
-- R2–A1 → relay 5 (IN5 / P8_11)
-- R2–A2 → relay 6 (IN6 / P8_12)
-- R2–A3 → relay 7 (IN7 / P8_14)
-- R2–A4 → relay 8 (IN8 / P8_15)
-- R3–A1 → relay 9 (IN9 / P8_16)
-- R3–A2 → relay 10 (IN10 / P8_17)
-- R3–A3 → relay 11 (IN11 / P8_18)
-- R3–A4 → relay 12 (IN12 / P8_26)
-- R4–A1 → relay 13 (IN13 / P9_12)
-- R4–A2 → relay 14 (IN14 / P9_15)
-- R4–A3 → relay 15 (IN15 / P9_23)
-- R4–A4 → relay 16 (IN16 / P9_41)
 
 **RF contacts:**
 
@@ -149,14 +110,3 @@ Pick one of these policies and encode it in the backend:
     - UI shows a lock icon; other operators see the button disabled or get a clear “locked” message.
 
 In all cases, the **logic layer** is the same relay control you already have; the difference is what the HTTP handler allows.
-
-## Web interface details
-
-- Front‑end: a single HTML page (Bootstrap table) that:
-    - Polls `/status` every few seconds (or uses WebSockets) to update the matrix.
-    - Sends `POST /set` for clicks, including: `radio`, `antenna`, `operator_id`.
-- Back‑end (Flask):
-    - Extends `set_radio_antenna()` with checks: is antenna free? does priority allow pre‑emption? is this radio locked?
-    - On state change: updates `current_assignment` *and* an in‑memory/object store with owner and timestamps.
-
-If you tell how you plan to identify operators (simple shared password per operator vs no auth vs full login), a concrete `/set` API shape and HTML stub for the matrix UI can be sketched next, including where to show “antenna in use by …” and “locked” indicators.
