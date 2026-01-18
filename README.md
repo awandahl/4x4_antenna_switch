@@ -58,7 +58,6 @@ NC terminals: leave open or tie to ground/dummy load according to how much extra
 - Bring the BBB in via a shielded cable or mount it inside and bring Ethernet/USB out with appropriate feedthroughs.
 - Tie BBB ground to the RF box ground at one solid point.
   
-<img width="513" height="385" alt="bbb_headers" src="https://github.com/user-attachments/assets/ae9b7e7e-b9a2-46fe-99ce-f40bbfd5d12c" />
 
 ![a30123495324702ed8b21357d4811e0c](https://github.com/user-attachments/assets/17dc8cb5-628d-4a65-a22f-1f29e19680fd)
 
