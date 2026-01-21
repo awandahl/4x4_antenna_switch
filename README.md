@@ -1,7 +1,7 @@
 
 # 4x4_antenna_switch
 
-Mapping that includes both **GPIO numbers and the physical header pins** on the standard Wemos/AZ‑Delivery Lolin32.[^1][^2]
+Mapping that includes both **GPIO numbers and the physical header pins** on the standard Wemos/AZ‑Delivery Lolin32.
 
 ## Lolin32 → 16‑relay board wiring
 
@@ -10,7 +10,7 @@ Use any free header pins that expose the listed GPIOs; the “Pin\#” column is
 
 | Relay IN | ESP32 GPIO | Lolin32 header pin label / position |
 | :-- | :-- | :-- |
-| IN1 | GPIO4 | Pin labeled **4** (left side, near top) [^1] |
+| IN1 | GPIO4 | Pin labeled **4** |
 | IN2 | GPIO5 | Pin labeled **5** |
 | IN3 | GPIO12 | Pin labeled **12** |
 | IN4 | GPIO13 | Pin labeled **13** |
@@ -25,7 +25,7 @@ Use any free header pins that expose the listed GPIOs; the “Pin\#” column is
 | IN13 | GPIO25 | Pin labeled **25** |
 | IN14 | GPIO26 | Pin labeled **26** |
 | IN15 | GPIO27 | Pin labeled **27** |
-| IN16 | GPIO32 | Pin labeled **32** (top/right side) |
+| IN16 | GPIO32 | Pin labeled **32** |
 
 Common connections:
 
