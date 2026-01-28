@@ -60,6 +60,7 @@ NC terminals: leave open or tie to ground/dummy load according to how much extra
   
 
 ![a30123495324702ed8b21357d4811e0c](https://github.com/user-attachments/assets/17dc8cb5-628d-4a65-a22f-1f29e19680fd)
+<img width="1262" height="921" alt="Screenshot 2026-01-28 at 22-09-27 ESP32_Lolin32_Pinout pdf" src="https://github.com/user-attachments/assets/72f699b9-1a5b-4d10-962c-778f14f00bbe" />
 
 Design is around a **single source of truth** (the BBB) with explicit ownership and priority, so “antenna battles” are handled by rules, not by race conditions.
 
