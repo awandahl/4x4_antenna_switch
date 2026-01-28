@@ -8,24 +8,25 @@ Mapping that includes both **GPIO numbers and the physical header pins** on the 
 Use any free header pins that expose the listed GPIOs; the “Pin\#” column is the silkscreen/header position on the Lolin32 board.
 
 
-| Relay IN | ESP32 GPIO | Lolin32 header pin label / position |
+| Relay IN | ESP32 GPIO | Board label you solder to |
 | :-- | :-- | :-- |
-| IN1 | GPIO4 | Pin labeled **4** |
-| IN2 | GPIO5 | Pin labeled **5** |
-| IN3 | GPIO12 | Pin labeled **12** |
-| IN4 | GPIO13 | Pin labeled **13** |
-| IN5 | GPIO14 | Pin labeled **14** |
-| IN6 | GPIO16 | Pin labeled **16** |
-| IN7 | GPIO17 | Pin labeled **17** |
-| IN8 | GPIO18 | Pin labeled **18** |
-| IN9 | GPIO19 | Pin labeled **19** |
-| IN10 | GPIO21 | Pin labeled **21** |
-| IN11 | GPIO22 | Pin labeled **22** |
-| IN12 | GPIO23 | Pin labeled **23** |
-| IN13 | GPIO25 | Pin labeled **25** |
-| IN14 | GPIO26 | Pin labeled **26** |
-| IN15 | GPIO27 | Pin labeled **27** |
-| IN16 | GPIO32 | Pin labeled **32** |
+| IN1 | GPIO4 | Pin labeled 4 |
+| IN2 | GPIO5 | Pin labeled 5 |
+| IN3 | GPIO12 | Pin labeled 12 |
+| IN4 | GPIO13 | Pin labeled 13 |
+| IN5 | GPIO14 | Pin labeled 14 |
+| IN6 | GPIO16 | Pin labeled 16 |
+| IN7 | GPIO17 | Pin labeled 17 |
+| IN8 | GPIO18 | Pin labeled 18 |
+| IN9 | GPIO19 | Pin labeled 19 |
+| IN10 | GPIO33 | Pin labeled 33 |
+| IN11 | GPIO22 | Pin labeled 22 |
+| IN12 | GPIO23 | Pin labeled 23 |
+| IN13 | GPIO25 | Pin labeled 25 |
+| IN14 | GPIO26 | Pin labeled 26 |
+| IN15 | GPIO27 | Pin labeled 27 |
+| IN16 | GPIO32 | Pin labeled 32 |
+
 
 Common connections:
 
