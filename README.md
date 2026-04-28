@@ -27,6 +27,25 @@ Use any free header pins that expose the listed GPIOs; the “Pin\#” column is
 | IN15 | GPIO27 | Pin labeled 27 |
 | IN16 | GPIO32 | Pin labeled 32 |
 
+| Relay # | Radio | Antenna | ESP32 GPIO | Board label to solder |
+|--------:|:-----:|:-------:|:----------:|:----------------------|
+| 1       | R1    | A1      | GPIO16     | Pin labeled 16        |
+| 2       | R1    | A2      | GPIO17     | Pin labeled 17        |
+| 3       | R1    | A3      | GPIO18     | Pin labeled 18        |
+| 4       | R1    | A4      | GPIO19     | Pin labeled 19        |
+| 5       | R2    | A1      | GPIO22     | Pin labeled 22        |
+| 6       | R2    | A2      | GPIO23     | Pin labeled 23        |
+| 7       | R2    | A3      | GPIO25     | Pin labeled 25        |
+| 8       | R2    | A4      | GPIO26     | Pin labeled 26        |
+| 9       | R3    | A1      | GPIO27     | Pin labeled 27        |
+| 10      | R3    | A2      | GPIO32     | Pin labeled 32        |
+| 11      | R3    | A3      | GPIO33     | Pin labeled 33        |
+| 12      | R3    | A4      | GPIO4      | Pin labeled 4         |
+| 13      | R4    | A1      | GPIO5      | Pin labeled 5         |
+| 14      | R4    | A2      | GPIO13     | Pin labeled 13        |
+| 15      | R4    | A3      | GPIO14     | Pin labeled 14        |
+| 16      | R4    | A4      | GPIO12     | Pin labeled 12        |
+
 
 Common connections:
 
