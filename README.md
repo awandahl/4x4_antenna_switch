@@ -111,3 +111,42 @@ Pick one of these policies and encode it in the backend:
     - UI shows a lock icon; other operators see the button disabled or get a clear “locked” message.
 
 In all cases, the **logic layer** is the same relay control you already have; the difference is what the HTTP handler allows.
+
+```
+{
+  "radios": {
+    "1": {
+      "relays": {
+        "1": { "antenna": 1, "gpio": 16 },
+        "2": { "antenna": 2, "gpio": 17 },
+        "3": { "antenna": 3, "gpio": 18 },
+        "4": { "antenna": 4, "gpio": 19 }
+      }
+    },
+    "2": {
+      "relays": {
+        "5": { "antenna": 1, "gpio": 22 },
+        "6": { "antenna": 2, "gpio": 23 },
+        "7": { "antenna": 3, "gpio": 25 },
+        "8": { "antenna": 4, "gpio": 26 }
+      }
+    },
+    "3": {
+      "relays": {
+        "9":  { "antenna": 1, "gpio": 27 },
+        "10": { "antenna": 2, "gpio": 32 },
+        "11": { "antenna": 3, "gpio": 33 },
+        "12": { "antenna": 4, "gpio": 4 }
+      }
+    },
+    "4": {
+      "relays": {
+        "13": { "antenna": 1, "gpio": 5 },
+        "14": { "antenna": 2, "gpio": 13 },
+        "15": { "antenna": 3, "gpio": 14 },
+        "16": { "antenna": 4, "gpio": 12 }
+      }
+    }
+  }
+}
+```
